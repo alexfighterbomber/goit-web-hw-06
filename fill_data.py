@@ -4,36 +4,22 @@ from faker.providers import BaseProvider
 from random import randint, choice
 import sqlite3
 
-class UniversityProvider(BaseProvider):
-    def subject(self):
-        subjects = [
-            "Математика", "Физика", "Химия", "Биология", "История",
-            "Философия", "Программирование", "Базы данных", "Экономика",
-            "Менеджмент", "Литература", "Психология", "Социология",
-            "Иностранный язык"
-        ]
-        return self.random_element(subjects)
-  
+ 
 NUMBER_STUDENTS = 50
-NUMBER_GROUPS = 3
 NUMBER_TEACHERS = 5
 NUMBER_GRADES = 20
 
-def generate_fake_data(students, groups, teachers) -> tuple:
+def generate_fake_data(students, teachers) -> tuple:
     fake_students = []  # тут зберігатимемо студентів
     fake_subjects = [
             "Математика", "Програмування", "Бази даних", "Экономіка",
             "Менеджмент", "Психологія", "Соціология", "Англійська мова"
         ]
-    fake_groups = []  # тут зберігатимемо групи
+    fake_groups = ['SE-2021-1', 'ME-2022-4', 'LAW-2024-3']  # тут зберігатимемо групи
     fake_teachers = []  # тут зберігатимемо викладачів
 
     
     fake_data = faker.Faker()
-        
-    '''Створимо набір груп у кількості groups'''
-    for _ in range(groups):
-        fake_groups.append(fake_data.company())
 
     '''Створимо набір студентів у кількості students'''
     for _ in range(students):
@@ -55,7 +41,7 @@ def prepare_data(students, subjects, groups, teachers) -> tuple:
     for_students = []
     # Готуємо список кортежів із іменами студентів
     for student in students:
-        for_students.append((student, randint(1, NUMBER_GROUPS)))  
+        for_students.append((student, randint(1, len(groups))))  
     
     for_subjects = []
     # Готуємо список кортежів із назвами предметів  
@@ -116,5 +102,5 @@ def insert_data_to_db(students, subjects, groups, teachers, grades):
 
 if __name__ == "__main__":
 
-    insert_data_to_db(*prepare_data(*generate_fake_data(NUMBER_STUDENTS, NUMBER_GROUPS, NUMBER_TEACHERS)))
+    insert_data_to_db(*prepare_data(*generate_fake_data(NUMBER_STUDENTS, NUMBER_TEACHERS)))
     print('Data has been successfully added to the database!')
