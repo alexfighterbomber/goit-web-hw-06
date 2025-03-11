@@ -14,4 +14,4 @@ def execute_query(file: str):
         return cur.fetchall()
     
 if __name__ == "__main__":
-    print(execute_query('query_12.sql'))
+    print(execute_query('query_09.sql'))
